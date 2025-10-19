@@ -1,13 +1,13 @@
-def is_solved(grid: list[list[int]]) -> bool:
-    for row in grid:
+def is_solved(board: list[list[int]]) -> bool:
+    for row in board:
         for value in row:
             if not value:
                 return False
     return True
 
-def solve(grid: list[list[int]]) -> None:
-    width = len(grid)
-    if width == 0 or len(grid[0]) != width or width % 3 != 0:
+def solve(board: list[list[int]]) -> None:
+    width = len(board)
+    if width == 0 or len(board[0]) != width or width % 3 != 0:
         raise ValueError("Grid must be non-empty and square")
 
     square_size = width // 3
@@ -19,19 +19,19 @@ def solve(grid: list[list[int]]) -> None:
             for j in range(width):
 
                 # already solved
-                if grid[i][j] != 0:
+                if board[i][j] != 0:
                     continue
 
                 possible_values = [i for i in range(1, width + 1)]
 
                 # remove values from column
-                for row in grid:
+                for row in board:
                     val = row[j]
                     if val in possible_values:
                         possible_values.remove(row[j])
 
                 # remove values from row
-                for val in grid[i]:
+                for val in board[i]:
                     if val in possible_values:
                         possible_values.remove(val)
 
@@ -40,7 +40,7 @@ def solve(grid: list[list[int]]) -> None:
                 square_j = j // 3
                 for i_offset in range(square_size):
                     for j_offset in range(square_size):
-                        val = grid[square_i * 3 + i_offset][square_j * 3 + j_offset]
+                        val = board[square_i * 3 + i_offset][square_j * 3 + j_offset]
                         if val in possible_values:
                             possible_values.remove(val)
 
@@ -48,5 +48,5 @@ def solve(grid: list[list[int]]) -> None:
                     raise ValueError("Invalid grid")
 
                 if len(possible_values) == 1:
-                    grid[i][j] = possible_values[0]
+                    board[i][j] = possible_values[0]
                     has_made_progress = True
